@@ -17,7 +17,7 @@ router.get("/", async (req,res)=>{
 //get single products
 router.get("/:id", async (req,res)=>{
     try{
-    let product = await Product.findById(req.params.pid);
+    let product = await Product.findById(req.params.id);
     if(!product)
     {
         return res.status(400).send("Product with given ID is not present");//when id is not present in db
@@ -29,31 +29,30 @@ router.get("/:id", async (req,res)=>{
 });
 //update a single record
 router.put("/:id",validateproduct,auth,admin,async (req,res)=>{
-    let product = await Product.findById(req.params.pid);
+    let product = await Product.findById(req.params.id);
     product.name = req.body.name;
-    product.pid = req.body.pid;
-    product.category = req.body.category;
-    product.Details = req.body.category;
     product.price = req.body.price;
-    product.Link=req.body.Link;
-
+    product.pid = req.body.pid;
+    product.Link = req.body.Link;
+    product.category = req.body.category;
+    product.details = req.body.details;
     await product.save();
     return res.send(product);
 });
 //delete a single record
 router.delete("/:id",auth,admin,async (req,res)=>{
-    let product = await Product.findByIdAndDelete(req.params.pid);
+    let product = await Product.findByIdAndDelete(req.params.id);
     return res.send(product);
 });
 //insert a record
 router.post("/",validateproduct,auth,async (req,res)=>{
     let product = new Product();
     product.name = req.body.name;
-    product.pid = req.body.pid;
-    product.category = req.body.category;
-    product.Details = req.body.category;
     product.price = req.body.price;
+    product.pid = req.body.pid;
     product.Link=req.body.Link;
+    product.category = req.body.category;
+    product.details = req.body.details;
     await product.save();
     return res.send(product);
 });
